@@ -1,8 +1,9 @@
+import { Component } from '@angular/core';
+import { NgRedux, select } from '@angular-redux/store';
+
+
 import { INCREMENT } from './actions';
 import { IAppState } from './store';
-import { Component } from '@angular/core';
-import { NgRedux } from '@angular-redux/store';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -10,10 +11,10 @@ import { NgRedux } from '@angular-redux/store';
 })
 export class AppComponent {
   title = 'Redux Learning';
-  counter = 0;
-
+  @select('counter') count;
+  @select(['messaging','newMessages']) newMessages;
+  @select( (s:IAppState) => s.messaging.newMessages) newMessagesCount;
   constructor(private ngRedux: NgRedux<IAppState>){
-
   }
 
   increment(){
