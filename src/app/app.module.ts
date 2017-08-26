@@ -1,6 +1,7 @@
+import { IAppState ,rootReducer } from './store';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { NgRedux , NgReduxModule } from '@angular-redux/store';
 import { AppComponent } from './app.component';
 
 @NgModule({
@@ -8,9 +9,14 @@ import { AppComponent } from './app.component';
     AppComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    NgReduxModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+  constructor(ngRedux: NgRedux<IAppState>){
+    ngRedux.configureStore(rootReducer,{});
+  }
+}
