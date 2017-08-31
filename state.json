@@ -1,0 +1,4 @@
+{
+	"payload": "[{\"type\":\"INCREMENT\"},{\"type\":\"INCREMENT\"},{\"type\":\"INCREMENT\"},{\"type\":\"INCREMENT\"}]",
+	"preloadedState": "{\"counter\":0,\"messaging\":{\"newMessages\":0}}"
+}
