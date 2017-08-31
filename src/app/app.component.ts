@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Map } from 'immutable';
 import { NgRedux, select } from '@angular-redux/store';
 
 
@@ -11,10 +12,10 @@ import { IAppState } from './store';
 })
 export class AppComponent {
   title = 'Redux Learning';
-  @select('counter') count;
+  @select(s => s.get('counter')) count;
   @select(['messaging','newMessages']) newMessages;
   @select( (s:IAppState) => s.messaging.newMessages) newMessagesCount;
-  constructor(private ngRedux: NgRedux<IAppState>){
+  constructor(private ngRedux: NgRedux<Map<string,any>>){
   }
 
   increment(){
