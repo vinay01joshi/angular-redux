@@ -1,28 +1,48 @@
 import { tassign } from 'tassign';
-import { INCREMENT } from './actions';
+import { INCREMENT, ADD_TODO, TOGGLE_TODO, REMOVE_TODO, CLEAR_TODOS } from './actions';
 import { Map } from 'immutable';
 
 export interface IAppState {
-    counter: number;
-    messaging?: {
-        newMessages: number
-    }
+    todos: any[];
+    lastUpdate: Date;
 }
+export const INITIAL_STATE: IAppState = { 
+    todos: [],
+    lastUpdate: null
+  }
 
-export const INITIAL_STATE: IAppState = {
-    counter: 0,
-    messaging: {
-        newMessages: 0
-    }
-}
+export function rootReducer(state: IAppState, action): IAppState {
+    switch(action.type) {
+        case ADD_TODO:
+            var newTodo = {id: state.todos.length + 1,title: action.title };
+            return tassign(state, {
+                todos: state.todos.concat(newTodo),
+                lastUpdate: new Date()
+            });
+        case TOGGLE_TODO:
+            var todo = state.todos.find(t=> t.id === action.id)
+            var index =state.todos.indexOf(todo);
 
-export function rootReducer(state: Map<string,any>,action) : Map<string,any>{
-    switch(action.type){
-        case INCREMENT:         
-        return state.set('counter',state.get('counter') + 1);
-        // return { counter: state.counter + 1 }
-        // return Object.assign({},state,{ counter: state.counter + 1});
-        // return tassign(state,{counter: state.counter + 1 });
+            return tassign(state, {
+                todos: [
+
+                    ...state.todos.slice(0, index),
+                    tassign(todo, { isComplted: !todo.isComplted }),
+                    ...state.todos.slice(index +1),
+                ],
+                lastUpdate: new Date()
+                
+            });
+        case REMOVE_TODO:
+            return tassign(state, {
+                todos: state.todos.filter(t => t.id !== action.id),
+                lastUpdate: new Date()
+            });
+        case CLEAR_TODOS: 
+            return tassign(state, {
+                todos: [],
+                lastUpdate: new Date()
+            });        
     }
     return state;
 }
